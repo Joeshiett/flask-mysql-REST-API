@@ -5,11 +5,11 @@ from marshmallow import fields
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://joseph:password@localhost/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://joseph:password@localhost/test'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# Created a model titled "Authors" which has the fields
+# Created a model titled "Author" which has the fields
 #ID, name and specialization. ID is self generated
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,7 +25,7 @@ class Author(db.Model):
 db.create_all()
 
 #This class helps return json from SQLAlchemy
-class AuthorSchema(ma.ModelSchema):
+class AuthorSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Author
         sqla_session = db.session
@@ -34,6 +34,7 @@ class AuthorSchema(ma.ModelSchema):
     name = fields.String(required=True)
     specialization = fields.String(required=True)
 
+# author route
 @app.route('/authors', methods=['GET'])
 def index():
     get_authors = Author.query.all()
