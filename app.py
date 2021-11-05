@@ -47,7 +47,7 @@ def index():
 
 @app.route('/authors', methods=['POST'])
 def create_author():
-    data = request.get_json(force=True)
+    data = request.get_json()
     new_author=Author(
         name=data.get('name'),
         specialization=data.get('specialization')
